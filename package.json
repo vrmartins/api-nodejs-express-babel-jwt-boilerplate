@@ -1,0 +1,31 @@
+{
+  "name": "api-nodejs-express-babel-jwt-boilerplate",
+  "version": "0.0.1",
+  "description": "A boilerplate for Node.js web applications",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vrmartins/api-nodejs-express-babel-jwt-boilerplate.git"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "mongodb",
+    "mongoose",
+    "api",
+    "rest",
+    "passport",
+    "jwt",
+    "babel",
+    "boilerplate"
+  ],
+  "author": "Vilmar Rodrigues Martins",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vrmartins/api-nodejs-express-babel-jwt-boilerplate/issues"
+  },
+  "homepage": "https://github.com/vrmartins/api-nodejs-express-babel-jwt-boilerplate#readme"
+}
