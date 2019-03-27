@@ -9,7 +9,7 @@ const options = {
       version: "0.0.1",
       description: "Boilerplate documentation",
     },
-    host: "localhost:3000",
+    host: `localhost:${process.env.APP_PORT}`,
     basePath: "/api"
   },
   apis: ["server/routes/*"]
