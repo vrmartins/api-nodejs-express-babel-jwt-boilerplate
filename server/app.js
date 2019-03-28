@@ -1,10 +1,10 @@
-require('dotenv-safe').load();
+require("dotenv-safe").load();
 
-import express from 'express';
-import bodyParser from 'body-parser';
-import routes from './routes';
-import swaggerDoc from './swaggerDoc';
-import mongoose from 'mongoose';
+import express from "express";
+import bodyParser from "body-parser";
+import routes from "./routes";
+import swaggerDoc from "./swaggerDoc";
+import mongoose from "mongoose";
 
 const app = express(); // new server
 
@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // app.use('/swagger', express.static(__dirname + '/public/api-docs/'))
 
-app.use('/api', routes);
+app.use("/api", routes);
 
 swaggerDoc(app);
 

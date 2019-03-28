@@ -1,8 +1,8 @@
-'use strict'
+"use strict";
 
-import express from 'express';
-import logger from '../logger';
-import UserController from '../controllers/user';
+import express from "express";
+// import logger from '../logger';
+// import UserController from '../controllers/user';
 
 const router = express.Router();
 

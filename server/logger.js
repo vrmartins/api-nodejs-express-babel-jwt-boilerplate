@@ -1,10 +1,10 @@
-require('dotenv-safe').load()
+require("dotenv-safe").load();
 
 import { createLogger, format, transports } from "winston";
 
 // https://github.com/winstonjs/winston#logging
 // { error: 0, warn: 1, info: 2, verbose: 3, debug: 4, silly: 5 }
-const level = process.env.NODE_ENV!=='production' ? 'debug' : 'info';
+const level = process.env.NODE_ENV!=="production" ? "debug" : "info";
 
 function formatParams(info) {
 
@@ -42,8 +42,8 @@ if (process.env.NODE_ENV !== "production") {
     level: level,
     format: productionFormat,
     transports: [
-      new transports.File({ filename: 'logs/error.log', level: "error" }),
-      new transports.File({ filename: 'logs/combined.log' })
+      new transports.File({ filename: "logs/error.log", level: "error" }),
+      new transports.File({ filename: "logs/combined.log" })
     ]
   });
 }

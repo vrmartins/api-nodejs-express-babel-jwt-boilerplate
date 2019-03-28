@@ -4,7 +4,9 @@
   "description": "A boilerplate for Node.js web applications",
   "main": "index.js",
   "scripts": {
-    "dev": "./node_modules/.bin/nodemon --exec babel-node index.js"
+    "dev": "./node_modules/.bin/nodemon --exec babel-node index.js",
+    "lint": "eslint ./",
+    "lint-fix": "eslint ./ --fix"
   },
   "repository": {
     "type": "git",
@@ -32,6 +34,7 @@
     "@babel/core": "^7.4.0",
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.4.2",
+    "eslint": "^5.15.3",
     "nodemon": "^1.18.10"
   },
   "dependencies": {
