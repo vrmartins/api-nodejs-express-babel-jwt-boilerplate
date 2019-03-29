@@ -6,7 +6,13 @@
   "scripts": {
     "dev": "./node_modules/.bin/nodemon --exec babel-node index.js",
     "lint": "eslint ./",
+<<<<<<< HEAD
     "lint-fix": "eslint ./ --fix"
+=======
+    "lint:fix": "eslint ./ --fix",
+    "dev:container": "docker-compose -f docker-compose-dev.yml up && docker-compose down",
+    "test:container": "docker-compose -f docker-compose-test.yml up && docker-compose down"
+>>>>>>> feat(docker): Run lint after merge feature/docker
   },
   "repository": {
     "type": "git",

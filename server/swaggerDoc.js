@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // require('dotenv-safe').load()
+=======
+require("dotenv-safe").load();
+>>>>>>> feat(docker): Run lint after merge feature/docker
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
 
