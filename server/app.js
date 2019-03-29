@@ -8,7 +8,12 @@ import mongoose from "mongoose";
 
 const app = express(); // new server
 
-mongoose.connect(`mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_ADDRESS}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`, { useNewUrlParser: true });
+const database_uri = function () {
+  if (process.env.NODE_ENV !== "production") return `mongodb://${process.env.DATABASE_ADDRESS}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`;
+  return `mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_ADDRESS}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`;
+}();
+
+mongoose.connect(database_uri, { useNewUrlParser: true });
 
 // parse body params
 app.use(bodyParser.json());
