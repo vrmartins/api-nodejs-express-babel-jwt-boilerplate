@@ -2,7 +2,7 @@
 
 import express from "express";
 // import logger from '../logger';
-// import UserController from '../controllers/user';
+import UserController from "../controllers/user";
 
 const router = express.Router();
 
@@ -146,13 +146,13 @@ const router = express.Router();
  *         description: The resource you were trying to reach is not found
  */
 
-// router.route('/')
-// 	.get(userController.get)
-// 	.post(userController.post)
-// 	.put(userController.put);
+router.route("/")
+  .get(UserController.get)
+  .post(UserController.post)
+  .put(UserController.put);
 
-// router.route('/:id')
-// 	.get(userController.getById)
-// 	.delete(userController.deleteById);
+router.route("/:id")
+  .get(UserController.getById)
+  .delete(UserController.deleteById);
 
 export default router;
