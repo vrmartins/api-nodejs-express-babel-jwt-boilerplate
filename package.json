@@ -8,7 +8,8 @@
     "lint": "eslint ./",
     "lint:fix": "eslint ./ --fix",
     "dev:container": "docker-compose -f docker-compose-dev.yml up && docker-compose down",
-    "test:container": "docker-compose -f docker-compose-test.yml up && docker-compose down"
+    "test": "NODE_ENV=test node_modules/.bin/_mocha  --opts test/integration/mocha.opts test/integration/**/*.spec.js",
+    "test:container": "docker-compose -f docker-compose-test.yml up --abort-on-container-exit && docker-compose -f docker-compose-test.yml down"
   },
   "repository": {
     "type": "git",
@@ -36,13 +37,18 @@
     "@babel/core": "^7.4.0",
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.4.2",
+    "chai": "^4.2.0",
     "eslint": "^5.15.3",
-    "nodemon": "^1.18.10"
+    "faker": "^4.1.0",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.10",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
     "dotenv-safe": "^6.1.0",
     "express": "^4.16.4",
+    "mongo-tenant": "^1.6.0",
     "mongoose": "^5.4.20",
     "swagger-jsdoc": "^3.2.8",
     "swagger-ui-express": "^4.0.2",

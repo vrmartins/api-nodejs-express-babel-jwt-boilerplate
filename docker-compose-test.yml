@@ -4,12 +4,12 @@ services:
   app:
     build: .
     container_name: app_test
-    command: npm run dev
+    command: npm test
     environment:
       NODE_ENV: "test"
       DATABASE_ADDRESS: "mongodb"
       DATABASE_PORT: "27017"
-      DATABASE_NAME: "dbapi"
+      DATABASE_NAME: "dbapi-test"
     ports:
       - "3000:3000"
     volumes:

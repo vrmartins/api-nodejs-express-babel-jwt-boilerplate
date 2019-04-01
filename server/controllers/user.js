@@ -4,7 +4,7 @@ const UserController = {
   get: (req, res) => {
     res
       .status(200)
-      .json(req.param);
+      .json(req.query);
   },
   post: (req, res) => {
     res
