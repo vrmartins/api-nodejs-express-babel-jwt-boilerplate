@@ -3,7 +3,7 @@ require("dotenv-safe").load();
 import express from "express";
 import bodyParser from "body-parser";
 import routes from "./routes";
-import swaggerDoc from "./swaggerDoc";
+import expressSwagger from "./config/express-swagger";
 import mongoose from "mongoose";
 
 const app = express(); // new server
@@ -23,6 +23,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api", routes);
 
-swaggerDoc(app);
+expressSwagger.startup(app);
 
 export default app;
