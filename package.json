@@ -8,7 +8,7 @@
     "lint": "eslint ./",
     "lint:fix": "eslint ./ --fix",
     "dev:container": "docker-compose -f docker-compose-dev.yml up && docker-compose down",
-    "test": "NODE_ENV=test node_modules/.bin/_mocha  --opts test/integration/mocha.opts test/integration/**/*.spec.js",
+    "test": "NODE_ENV=test nyc --reporter=html --reporter=text node_modules/.bin/_mocha  --opts test/integration/mocha.opts test/integration/**/*.spec.js",
     "test:container": "docker-compose -f docker-compose-test.yml up --abort-on-container-exit && docker-compose -f docker-compose-test.yml down"
   },
   "repository": {
@@ -37,11 +37,13 @@
     "@babel/core": "^7.4.0",
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.4.2",
+    "babel-plugin-istanbul": "^5.1.1",
     "chai": "^4.2.0",
     "eslint": "^5.15.3",
     "faker": "^4.1.0",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.10",
+    "nyc": "^13.3.0",
     "supertest": "^4.0.2"
   },
   "dependencies": {
