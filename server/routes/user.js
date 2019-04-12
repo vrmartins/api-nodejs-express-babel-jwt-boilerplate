@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
-import express from "express";
-import UserController from "../controllers/user";
+import express from 'express';
+import UserController from '../controllers/user';
 
-const router = express.Router();
+const router = new express.Router();
 
 /**
  * @typedef User
@@ -13,8 +13,8 @@ const router = express.Router();
  * @property {string} password.required - Password
  */
 
-router.route("/")
-  /**
+router.route('/')
+/**
   * Get a list of users
   *
   * @route GET /user/
@@ -22,13 +22,14 @@ router.route("/")
   * @returns {Array.<User>} 200 - OK
   * @return  {Error} 204 - No content
   * @return  {Error} 401 - You are not authorized to view the resource
-  * @return  {Error} 403 - Accessing the resource you were trying to reach is forbidden
+  * @return  {Error} 403 - Accessing the resource you were trying
+  * to reach is forbidden
   * @return  {Error} 404 - The resource you were trying to reach is not found
   * @return  {Error} 500 - Unexpected error
   */
-  .get(UserController.get)
+    .get(UserController.get)
 
-  /**
+/**
   * Create a new user
   *
   * @route POST /user/
@@ -39,11 +40,11 @@ router.route("/")
   * @return  {Error} 404 - Not Found
   * @return  {Error} 500 - Unexpected error
   */
-  .post(UserController.post);
+    .post(UserController.post);
 
-router.route("/:id")
+router.route('/:id')
 
-  /**
+/**
   * Get a user by ID
   *
   * @route GET /user/{_id}
@@ -51,13 +52,14 @@ router.route("/:id")
   * @returns {User.model} 200 - Ok
   * @return  {Error} 204 - No content
   * @return  {Error} 401 - You are not authorized to view the resource
-  * @return  {Error} 403 - Accessing the resource you were trying to reach is forbidden
+  * @return  {Error} 403 - Accessing the resource you were
+  * trying to reach is forbidden
   * @return  {Error} 404 - The resource you were trying to reach is not found
   * @return  {Error} 500 - Unexpected error
   */
-  .get(UserController.getById)
+    .get(UserController.getById)
 
-  /**
+/**
   * Update user by ID
   *
   * @route PUT /user/{_id}
@@ -68,9 +70,9 @@ router.route("/:id")
   * @return  {Error} 404 - Not Found
   * @return  {Error} 500 - Unexpected error
   */
-  .put(UserController.put)
+    .put(UserController.put)
 
-  /**
+/**
   * Delete a user by ID
   *
   * @route DELETE /user/{_id}
@@ -81,6 +83,6 @@ router.route("/:id")
   * @return  {Error} 404 - Not Found
   * @return  {Error} 500 - Unexpected error
   */
-  .delete(UserController.deleteById);
+    .delete(UserController.deleteById);
 
 export default router;
