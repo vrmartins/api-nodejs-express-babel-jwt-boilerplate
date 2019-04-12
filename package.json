@@ -52,6 +52,7 @@
     "dotenv-safe": "^6.1.0",
     "express": "^4.16.4",
     "express-swagger-generator": "^1.1.13",
+    "helmet": "^3.16.0",
     "mongo-tenant": "^1.6.0",
     "mongoose": "^5.4.20",
     "swagger-jsdoc": "^3.2.8",

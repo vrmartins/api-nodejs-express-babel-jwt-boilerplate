@@ -6,6 +6,7 @@ import routes from './routes';
 import expressSwagger from './config/express-swagger';
 import mongoose from 'mongoose';
 import errorHandling from './middlewares/error-handling';
+import helmet from 'helmet';
 
 const app = express();
 
@@ -16,7 +17,8 @@ const databaseUri = function() {
 
 mongoose.connect(databaseUri, {useNewUrlParser: true});
 
-// parse body params
+app.use(helmet());
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
