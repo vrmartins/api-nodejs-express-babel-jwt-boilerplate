@@ -10,8 +10,9 @@ function errorHandling(app) {
   Error.DocumentNotFoundError.prototype.status = 404;
   Error.ValidationError.prototype.status = 422;
 
-  // eslint-disable-next-line no-unused-vars
   app.use((error, request, response, next) => {
+    console.log('ERRO QUE CHEGOU NO HANDLING', error);
+
     if (error instanceof Error.ValidationError) {
       logger.warn('ValidationError', {error});
       return response.status(error.status).json({error});
