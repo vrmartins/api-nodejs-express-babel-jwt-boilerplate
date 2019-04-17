@@ -1,6 +1,8 @@
 'use strict';
 
+import auth from './auth';
 import express from 'express';
+import User from '../models/user';
 import UserController from '../controllers/user';
 
 const router = new express.Router();
@@ -27,20 +29,52 @@ router.route('/')
   * @return  {Error} 404 - The resource you were trying to reach is not found
   * @return  {Error} 500 - Unexpected error
   */
-    .get(UserController.get)
+    .get(auth.required, UserController.get)
 
 /**
   * Create a new user
   *
   * @route POST /user/
   * @group User - Manage user
+  * @param {User.model} user.body - Insert user
   * @returns {User.model} 201 - Created
   * @return  {Error} 401 - Unauthorized
   * @return  {Error} 403 - Forbidden
   * @return  {Error} 404 - Not Found
   * @return  {Error} 500 - Unexpected error
   */
-    .post(UserController.post);
+    .post((req, res, next) => {
+      // TODO: Transferir a função para o controller
+      const user = req.body;
+
+      if (!user.email) {
+        return res.status(422).json({
+          errors: {
+            email: 'is required',
+          },
+        });
+      }
+
+      if (!user.password) {
+        return res.status(422).json({
+          errors: {
+            password: 'is required',
+          },
+        });
+      }
+
+      const finalUser = new User(user);
+
+      finalUser.setPassword(user.password);
+
+      return finalUser.save()
+          .then((doc) => {
+            res.json({user: finalUser.toAuthJSON()});
+          })
+          .catch((error) => {
+            next(error);
+          });
+    });
 
 router.route('/:id')
 
@@ -57,7 +91,7 @@ router.route('/:id')
   * @return  {Error} 404 - The resource you were trying to reach is not found
   * @return  {Error} 500 - Unexpected error
   */
-    .get(UserController.getById)
+    .get(auth.required, UserController.getById)
 
 /**
   * Update user by ID

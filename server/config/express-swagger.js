@@ -15,6 +15,7 @@ const startup = (app) => {
       produces: ['application/json'],
       schemes: ['http', 'https'],
       securityDefinitions: {
+        // TODO: Não está enviando o Bearer authorization
         Bearer: {
           type: 'apiKey',
           in: 'header',
