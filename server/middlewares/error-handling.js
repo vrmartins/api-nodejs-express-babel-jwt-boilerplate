@@ -11,8 +11,6 @@ function errorHandling(app) {
   Error.ValidationError.prototype.status = 422;
 
   app.use((error, request, response, next) => {
-    console.log('ERRO QUE CHEGOU NO HANDLING', error);
-
     if (error instanceof Error.ValidationError) {
       logger.warn('ValidationError', {error});
       return response.status(error.status).json({error});

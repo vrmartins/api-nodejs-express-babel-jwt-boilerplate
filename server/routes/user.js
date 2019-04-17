@@ -29,7 +29,7 @@ router.route('/')
   * @return  {Error} 404 - The resource you were trying to reach is not found
   * @return  {Error} 500 - Unexpected error
   */
-    .get(auth.optional, UserController.get)
+    .get(auth.required, UserController.get)
 
 /**
   * Create a new user
@@ -46,9 +46,6 @@ router.route('/')
     .post((req, res, next) => {
       // TODO: Transferir a função para o controller
       const user = req.body;
-
-      console.log('ESSE AQUI É O REQ.BODY', req.body);
-      console.log('ESSE AQUI É O USER', user);
 
       if (!user.email) {
         return res.status(422).json({
@@ -68,19 +65,13 @@ router.route('/')
 
       const finalUser = new User(user);
 
-      console.log('ESSE AQUI É O finalUser', finalUser);
-
       finalUser.setPassword(user.password);
-
-      console.log('ESSE AQUI É O finalUser após setar o password', finalUser);
 
       return finalUser.save()
           .then((doc) => {
-            console.log('ESSE AQUI É O USER SALVO', doc);
             res.json({user: finalUser.toAuthJSON()});
           })
           .catch((error) => {
-            console.log('OCORREU UM ERRO E VIM PARA O CATCH');
             next(error);
           });
     });
