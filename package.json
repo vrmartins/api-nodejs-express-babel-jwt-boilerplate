@@ -53,7 +53,7 @@
     "dotenv-safe": "^6.1.0",
     "express": "^4.16.4",
     "express-jwt": "^5.3.1",
-    "express-swagger-generator": "^1.1.13",
+    "express-swagger-generator": "^1.1.14",
     "helmet": "^3.16.0",
     "jsonwebtoken": "^8.5.1",
     "mongo-tenant": "^1.6.0",

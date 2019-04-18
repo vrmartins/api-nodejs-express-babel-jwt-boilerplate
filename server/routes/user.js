@@ -10,9 +10,14 @@ const router = new express.Router();
 /**
  * @typedef User
  *
- * @property {string} name.required - Name
+ * @property {string} id - Id
+ * @property {string} firstName.required - First Name
+ * @property {string} lastName.required - Last Name
  * @property {string} email.required - Email
- * @property {string} password.required - Password
+ * @property {string} hash.required - Hash
+ * @property {string} salt.required - Salt
+ * @property {Array<Tenant>} tenants.required - Tenants that the user can access
+ * @property {string} role.required - User role
  */
 
 router.route('/')
