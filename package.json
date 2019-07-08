@@ -44,7 +44,7 @@
     "faker": "^4.1.0",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.10",
-    "nyc": "^13.3.0",
+    "nyc": "^14.1.1",
     "supertest": "^4.0.2"
   },
   "dependencies": {
@@ -58,7 +58,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongo-tenant": "^1.6.0",
     "mongoose": "^5.4.20",
-    "swagger-jsdoc": "^3.2.8",
+    "swagger-jsdoc": "^3.3.0",
     "swagger-ui-express": "^4.0.2",
     "winston": "^3.2.1"
   }
