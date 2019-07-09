@@ -20,6 +20,16 @@ const router = new express.Router();
  * @property {string} role.required - User role
  */
 
+/**
+ * @typedef User_Request
+ *
+ * @property {string} id - Id
+ * @property {string} firstName.required - First Name
+ * @property {string} lastName.required - Last Name
+ * @property {string} email.required - Email
+ * @property {string} password.required - Password
+ */
+
 router.route('/')
 /**
   * Get a list of users
@@ -41,7 +51,7 @@ router.route('/')
   *
   * @route POST /user/
   * @group User - Manage user
-  * @param {User.model} user.body - Insert user
+  * @param {User_Request.model} user.body - Insert user
   * @returns {User.model} 201 - Created
   * @return  {Error} 401 - Unauthorized
   * @return  {Error} 403 - Forbidden

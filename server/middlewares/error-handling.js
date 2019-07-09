@@ -18,6 +18,7 @@ function errorHandling(app) {
 
     const knownErrors = [
       'ResourceNotFound',
+      'UnauthorizedError',
     ];
 
     // TODO: Remove duplicated logger.warn()

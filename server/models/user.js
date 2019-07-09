@@ -3,7 +3,11 @@ import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 
 const UserSchema = new Schema({
-  name: {
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
     type: String,
     required: true,
   },
@@ -20,6 +24,8 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  tenants: Array, // TODO: Array of tenants
+  role: Object, // TODO: Verify
 });
 
 UserSchema.methods.setPassword = function(password) {
