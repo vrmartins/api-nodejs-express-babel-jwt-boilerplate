@@ -1,14 +1,14 @@
 const startup = (app) => {
-  if (process.env.NODE_ENV === 'production') return false;
+  if (process.env.NODE_ENV === 'production') return false
 
-  const expressSwagger = require('express-swagger-generator')(app);
+  const expressSwagger = require('express-swagger-generator')(app)
 
   const options = {
     swaggerDefinition: {
       info: {
         title: 'Boilerplate Documentation',
         version: '0.0.1',
-        description: 'Boilerplate documentation',
+        description: 'Boilerplate documentation'
       },
       host: `localhost:${process.env.APP_PORT}`,
       basePath: '/api',
@@ -20,19 +20,19 @@ const startup = (app) => {
           type: 'apiKey',
           in: 'header',
           name: 'Authorization',
-          description: '',
-        },
-      },
+          description: ''
+        }
+      }
     },
     basedir: __dirname,
     files: ['../routes/**/*.js'],
     route: {
       url: '/api-docs',
-      docs: '/api-docs.json',
-    },
-  };
+      docs: '/api-docs.json'
+    }
+  }
 
-  expressSwagger(options);
-};
+  expressSwagger(options)
+}
 
-export default {startup};
+export default { startup }
