@@ -59,6 +59,7 @@ UserSchema.methods.generateJWT = function () {
   return jwt.sign({
     email: this.email,
     id: this._id,
+    tenantId: 'tenantId', // Alterar para o tenant logado
     exp: parseInt(expirationDate.getTime() / 1000, 10)
   }, 'secret')
 }

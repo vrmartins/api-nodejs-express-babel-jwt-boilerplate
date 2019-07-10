@@ -68,7 +68,7 @@ router.route('/')
   * @return  {Error} 404 - The resource you were trying to reach is not found
   * @return  {Error} 500 - Unexpected error
   */
-  // .get(auth.required, TenantController.getById)
+// .get(auth.required, TenantController.getById)
 
 /**
   * Update tenant by ID
@@ -81,7 +81,7 @@ router.route('/')
   * @return  {Error} 404 - Not Found
   * @return  {Error} 500 - Unexpected error
   */
-  // .put(TenantController.put)
+// .put(TenantController.put)
 
 /**
   * Delete a tenant by ID
@@ -94,6 +94,6 @@ router.route('/')
   * @return  {Error} 404 - Not Found
   * @return  {Error} 500 - Unexpected error
   */
-  // .delete(TenantController.deleteById)
+// .delete(TenantController.deleteById)
 
 export default router
