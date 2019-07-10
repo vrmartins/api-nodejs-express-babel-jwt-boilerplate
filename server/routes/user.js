@@ -1,5 +1,3 @@
-'use strict'
-
 import express from 'express'
 import Joi from '@hapi/joi'
 import auth from './auth'

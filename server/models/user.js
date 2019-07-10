@@ -1,15 +1,18 @@
 import { Schema, model } from 'mongoose'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
+import uniqueValidator from 'mongoose-unique-validator'
 
 const UserSchema = new Schema({
   firstName: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   lastName: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   email: {
     type: String,
@@ -26,6 +29,12 @@ const UserSchema = new Schema({
   },
   tenants: Array, // TODO: Array of tenants
   role: Object // TODO: Verify
+}, {
+  timestamps: true
+})
+
+UserSchema.plugin(uniqueValidator, {
+  message: 'Error, expected {PATH} to be unique.'
 })
 
 UserSchema.methods.setPassword = function (password) {

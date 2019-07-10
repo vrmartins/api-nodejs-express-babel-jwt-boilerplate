@@ -16,13 +16,6 @@
  */
 
 /**
- * @typedef Tenant
- *
- * @property {string} id - Id
- * @property {string} name.required - First Name
- */
-
-/**
  * @typedef address
  *
  * @property {enum} type.required - Type - eg: Billing,Shipping
