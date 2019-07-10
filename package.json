@@ -64,6 +64,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongo-tenant": "^1.6.0",
     "mongoose": "^5.4.20",
+    "mongoose-unique-validator": "^2.0.3",
     "swagger-jsdoc": "^3.3.0",
     "swagger-ui-express": "^4.0.2",
     "winston": "^3.2.1"

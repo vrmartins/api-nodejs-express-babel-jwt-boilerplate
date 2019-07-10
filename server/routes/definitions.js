@@ -1,28 +1,4 @@
 /**
- * @typedef Person
- *
- * @property {string} id - Id
- * @property {string} tenantId.required - Tenant Id
- * @property {string} firstName.required - First Name
- * @property {string} lastName.required - Last Name
- * @property {string} nickName.required - Nickname
- * @property {string} isCustomer.required - Is Customer?
- * @property {string} isSupplier.required - Is Supplier?
- * @property {string} isEmployee.required - Is Employee?
- * @property {customerData.model} customerData - Customer Data
- * @property {supplierData.model} supplierData - Supplier Data
- * @property {employeeData.model} employeeData - Employee Data
- * @property {Array<address>} addresses - Addresses
- */
-
-/**
- * @typedef Tenant
- *
- * @property {string} id - Id
- * @property {string} name.required - First Name
- */
-
-/**
  * @typedef address
  *
  * @property {enum} type.required - Type - eg: Billing,Shipping
