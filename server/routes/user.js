@@ -1,11 +1,20 @@
-'use strict';
+'use strict'
 
-import auth from './auth';
-import express from 'express';
-import User from '../models/user';
-import UserController from '../controllers/user';
+import express from 'express'
+import Joi from '@hapi/joi'
+import auth from './auth'
+import User from '../models/user'
+import UserController from '../controllers/user'
+import validate from '../utils/joi/validate'
 
-const router = new express.Router();
+const router = new express.Router()
+
+const userSchema = Joi.object().keys({
+  firstName: Joi.string().max(64).required(),
+  lastName: Joi.string().max(128).required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().max(32).required()
+})
 
 /**
  * @typedef User
@@ -44,7 +53,7 @@ router.route('/')
   * @return  {Error} 404 - The resource you were trying to reach is not found
   * @return  {Error} 500 - Unexpected error
   */
-    .get(auth.required, UserController.get)
+  .get(auth.required, UserController.get)
 
 /**
   * Create a new user
@@ -58,38 +67,38 @@ router.route('/')
   * @return  {Error} 404 - Not Found
   * @return  {Error} 500 - Unexpected error
   */
-    .post((req, res, next) => {
-      // TODO: Transferir a função para o controller
-      const user = req.body;
+  .post(validate({ body: userSchema }), (req, res, next) => {
+    // TODO: Transferir a função para o controller
+    const user = req.body
 
-      if (!user.email) {
-        return res.status(422).json({
-          errors: {
-            email: 'is required',
-          },
-        });
-      }
+    if (!user.email) {
+      return res.status(422).json({
+        errors: {
+          email: 'is required'
+        }
+      })
+    }
 
-      if (!user.password) {
-        return res.status(422).json({
-          errors: {
-            password: 'is required',
-          },
-        });
-      }
+    if (!user.password) {
+      return res.status(422).json({
+        errors: {
+          password: 'is required'
+        }
+      })
+    }
 
-      const finalUser = new User(user);
+    const finalUser = new User(user)
 
-      finalUser.setPassword(user.password);
+    finalUser.setPassword(user.password)
 
-      return finalUser.save()
-          .then((doc) => {
-            res.json({user: finalUser.toAuthJSON()});
-          })
-          .catch((error) => {
-            next(error);
-          });
-    });
+    return finalUser.save()
+      .then((doc) => {
+        res.json({ user: finalUser.toAuthJSON() })
+      })
+      .catch((error) => {
+        next(error)
+      })
+  })
 
 router.route('/:id')
 
@@ -106,7 +115,7 @@ router.route('/:id')
   * @return  {Error} 404 - The resource you were trying to reach is not found
   * @return  {Error} 500 - Unexpected error
   */
-    .get(auth.required, UserController.getById)
+  .get(auth.required, UserController.getById)
 
 /**
   * Update user by ID
@@ -119,7 +128,7 @@ router.route('/:id')
   * @return  {Error} 404 - Not Found
   * @return  {Error} 500 - Unexpected error
   */
-    .put(UserController.put)
+  .put(UserController.put)
 
 /**
   * Delete a user by ID
@@ -132,6 +141,6 @@ router.route('/:id')
   * @return  {Error} 404 - Not Found
   * @return  {Error} 500 - Unexpected error
   */
-    .delete(UserController.deleteById);
+  .delete(UserController.deleteById)
 
-export default router;
+export default router
