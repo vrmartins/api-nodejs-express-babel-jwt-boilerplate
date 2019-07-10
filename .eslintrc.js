@@ -1,17 +1,19 @@
 module.exports = {
   'env': {
     'es6': true,
-    'node': true,
+    'node': true
   },
-  'extends': 'google',
+  'extends': [
+    'standard'
+  ],
   'globals': {
     'Atomics': 'readonly',
-    'SharedArrayBuffer': 'readonly',
+    'SharedArrayBuffer': 'readonly'
   },
   'parserOptions': {
     'ecmaVersion': 2018,
-    'sourceType': 'module',
+    'sourceType': 'module'
   },
   'rules': {
-  },
-};
+  }
+}
