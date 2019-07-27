@@ -1,15 +1,18 @@
 import express from 'express'
-import Joi from '@hapi/joi'
+import BaseJoi from '@hapi/joi'
 import auth from './auth'
 import validate from '../utils/joi/validate'
 import PersonController from '../controllers/person'
+import { notSpecialCharacter } from '../utils/joi/not-special-character'
+
+const Joi = BaseJoi.extend(notSpecialCharacter)
 
 const router = new express.Router()
 
 const personSchema = Joi.object().keys({
-  firstName: Joi.string().max(64).required(),
-  lastName: Joi.string().max(128).required(),
-  nickName: Joi.string().max(32),
+  firstName: Joi.string().notSpecialCharacter().max(64).required(),
+  lastName: Joi.string().notSpecialCharacter().max(128).required(),
+  nickName: Joi.string().notSpecialCharacter().max(32),
   isCustomer: Joi.boolean(),
   isSupplier: Joi.boolean(),
   isEmployee: Joi.boolean()

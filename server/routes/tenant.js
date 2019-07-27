@@ -1,13 +1,16 @@
 import express from 'express'
-import Joi from '@hapi/joi'
+import BaseJoi from '@hapi/joi'
 import auth from './auth'
 import validate from '../utils/joi/validate'
 import TenantController from '../controllers/tenant'
+import { notSpecialCharacter } from '../utils/joi/not-special-character'
+
+const Joi = BaseJoi.extend(notSpecialCharacter)
 
 const router = new express.Router()
 
 const tenantSchema = Joi.object().keys({
-  name: Joi.string().max(128).required()
+  name: Joi.string().notSpecialCharacter().max(128).required()
 })
 
 /**
