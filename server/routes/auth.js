@@ -1,4 +1,5 @@
-const jwt = require('express-jwt')
+import UserModel from '../models/user'
+import jwt from 'express-jwt'
 
 const getTokenFromHeaders = (req) => {
   const { headers: { authorization } } = req
@@ -9,18 +10,29 @@ const getTokenFromHeaders = (req) => {
   return null
 }
 
+const authBase = {
+  secret: process.env.AUTH_SECRET,
+  userProperty: 'payload',
+  getToken: getTokenFromHeaders
+}
+
+const userValidate = async (req, res, next) => {
+  try {
+    const countUsers = await UserModel.countDocuments({ email: req.payload.email })
+    if (countUsers > 0) next()
+    else res.status(401).json({})
+  } catch (error) {
+    next(error)
+  }
+}
+
 const auth = {
-  required: jwt({
-    secret: 'secret',
-    userProperty: 'payload',
-    getToken: getTokenFromHeaders
-  }),
+  required: jwt(authBase),
   optional: jwt({
-    secret: 'secret',
-    userProperty: 'payload',
-    getToken: getTokenFromHeaders,
+    ...authBase,
     credentialsRequired: false
-  })
+  }),
+  userValidate
 }
 
 module.exports = auth

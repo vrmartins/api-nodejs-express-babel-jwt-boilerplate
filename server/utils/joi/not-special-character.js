@@ -13,8 +13,6 @@ function notSpecialCharacter (joi) {
         notSpecialCharacter: joi.string()
       },
       validate (params, value, state, options) {
-        console.log('Esse é o value ===>', value)
-
         if (value.length !== value.replace(/[^a-z0-9áéíóúñü \.,_-]/gim, '').length) {
           return this.createError('string.notSpecialCharacter', { value, notSpecialCharacter: '' }, state, options)
         }

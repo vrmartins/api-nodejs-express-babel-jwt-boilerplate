@@ -1,35 +1,54 @@
 import UserModel from '../models/user'
 
 const UserController = {
-  get: (req, res) => {
-    UserModel.find()
-      .then((user) => res.status(200).json(user))
-      .catch((error) => res.status(500).json(error))
-  },
-
-  post: async (req, res, next) => {
+  // TODO: Garantir que apenas usuários autenticados recebam retorno nesse endpoint
+  // TODO: Garantir que serão listados apenas usuários dos tenants do usuário logado
+  get: async (req, res, next) => {
+    console.log(req.payload)
     try {
-      const user = new UserModel(req.body)
-      await user.save()
-      res
-        .status(201)
-        .json(user)
-      next()
+      res.status(200).json(await UserModel.find({}))
     } catch (error) {
       next(error)
     }
   },
 
-  put: (req, res) => {
-    res
-      .status(201)
-      .json(req.body)
+  post: async (req, res, next) => {
+    const user = req.body
+    const finalUser = new UserModel(user)
+
+    try {
+      finalUser.setPassword(user.password)
+      await finalUser.save()
+      res.json({ user: finalUser.toAuthJSON() })
+    } catch (error) {
+      next(error)
+    }
   },
 
-  getById: (req, res) => {
-    res
-      .status(200)
-      .json(req.param)
+  put: async ({ params, body: { password, ...body } }, res, next) => {
+    console.log('params ===>', params)
+    console.log('password ===>', password)
+    console.log('body ===>', body)
+    try {
+      const user = await UserModel.findById(params.id)
+      if (password) user.setPassword(password)
+      const finalUser = await user.updateOne(params.id, {
+        $set: body
+      })
+      res.json({ user: finalUser.toResponse() })
+    } catch (error) {
+      console.log(error.message)
+      next(error)
+    }
+  },
+
+  getById: async (req, res, next) => {
+    try {
+      const user = await UserModel.findById(req.params.id)
+      res.json({ user: user.toResponse() })
+    } catch (error) {
+      next(error)
+    }
   },
 
   deleteById: (req, res) => {

@@ -1,7 +1,6 @@
 import express from 'express'
 import BaseJoi from '@hapi/joi'
 import auth from './auth'
-import User from '../models/user'
 import UserController from '../controllers/user'
 import validate from '../utils/joi/validate'
 import { notSpecialCharacter } from '../utils/joi/not-special-character'
@@ -54,7 +53,7 @@ router.route('/')
   * @return  {Error} 404 - The resource you were trying to reach is not found
   * @return  {Error} 500 - Unexpected error
   */
-  .get(auth.required, UserController.get)
+  .get(auth.required, auth.userValidate, UserController.get)
 
 /**
   * Create a new user
@@ -68,38 +67,7 @@ router.route('/')
   * @return  {Error} 404 - Not Found
   * @return  {Error} 500 - Unexpected error
   */
-  .post(validate({ body: userSchema }), (req, res, next) => {
-    // TODO: Transferir a função para o controller
-    const user = req.body
-
-    if (!user.email) {
-      return res.status(422).json({
-        errors: {
-          email: 'is required'
-        }
-      })
-    }
-
-    if (!user.password) {
-      return res.status(422).json({
-        errors: {
-          password: 'is required'
-        }
-      })
-    }
-
-    const finalUser = new User(user)
-
-    finalUser.setPassword(user.password)
-
-    return finalUser.save()
-      .then((doc) => {
-        res.json({ user: finalUser.toAuthJSON() })
-      })
-      .catch((error) => {
-        next(error)
-      })
-  })
+  .post(validate({ body: userSchema }), UserController.post)
 
 router.route('/:id')
 
@@ -116,7 +84,7 @@ router.route('/:id')
   * @return  {Error} 404 - The resource you were trying to reach is not found
   * @return  {Error} 500 - Unexpected error
   */
-  .get(auth.required, UserController.getById)
+  .get(auth.required, auth.userValidate, UserController.getById)
 
 /**
   * Update user by ID
@@ -129,7 +97,7 @@ router.route('/:id')
   * @return  {Error} 404 - Not Found
   * @return  {Error} 500 - Unexpected error
   */
-  .put(UserController.put)
+  .put(auth.required, auth.userValidate, UserController.put)
 
 /**
   * Delete a user by ID
@@ -142,6 +110,6 @@ router.route('/:id')
   * @return  {Error} 404 - Not Found
   * @return  {Error} 500 - Unexpected error
   */
-  .delete(UserController.deleteById)
+  .delete(auth.required, auth.userValidate, UserController.deleteById)
 
 export default router

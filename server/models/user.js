@@ -37,6 +37,15 @@ UserSchema.plugin(uniqueValidator, {
   message: 'Error, expected {PATH} to be unique.'
 })
 
+UserSchema.methods.toResponse = function () {
+  return {
+    _id: this._id,
+    email: this.email,
+    firstName: this.firstName,
+    lastName: this.lastName
+  }
+}
+
 UserSchema.methods.setPassword = function (password) {
   this.salt = crypto.randomBytes(16).toString('hex')
   this.hash = crypto
@@ -54,12 +63,13 @@ UserSchema.methods.validatePassword = function (password) {
 UserSchema.methods.generateJWT = function () {
   const today = new Date()
   const expirationDate = new Date(today)
-  expirationDate.setDate(today.getDate() + 60)
+  expirationDate.setDate(today.getDate() + 30)
 
   return jwt.sign({
     email: this.email,
     id: this._id,
     tenantId: 'tenantId', // Alterar para o tenant logado
+    tenants: this.tenants,
     exp: parseInt(expirationDate.getTime() / 1000, 10)
   }, 'secret')
 }
