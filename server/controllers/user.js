@@ -1,4 +1,5 @@
 import UserModel from '../models/user'
+import sendWelcomeEmail from '../utils/sendWelcomeEmail'
 
 const UserController = {
   // TODO: Garantir que apenas usuários autenticados recebam retorno nesse endpoint
@@ -20,6 +21,8 @@ const UserController = {
       finalUser.setPassword(user.password)
       await finalUser.save()
       res.json({ user: finalUser.toAuthJSON() })
+
+      sendWelcomeEmail(user)
     } catch (error) {
       next(error)
     }
