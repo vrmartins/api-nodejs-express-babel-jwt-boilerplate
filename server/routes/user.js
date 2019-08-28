@@ -13,7 +13,8 @@ const userSchema = Joi.object().keys({
   firstName: Joi.string().notSpecialCharacter().max(64).required(),
   lastName: Joi.string().notSpecialCharacter().max(128).required(),
   email: Joi.string().email().required(),
-  password: Joi.string().max(32).required()
+  password: Joi.string().max(32).required(),
+  policy: Joi.boolean()
 })
 
 /**

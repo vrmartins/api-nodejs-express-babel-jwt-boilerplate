@@ -30,7 +30,8 @@ const UserSchema = new Schema({
     select: false
   },
   tenants: Array, // TODO: Array of tenants
-  role: Object // TODO: Verify
+  role: Object, // TODO: Verify
+  policy: Boolean
 }, {
   timestamps: true
 })
