@@ -1,38 +1,21 @@
-import UserModel from '../models/user'
-import jwt from 'express-jwt'
+import express from 'express'
+import AuthController from '../controllers/auth'
 
-const getTokenFromHeaders = (req) => {
-  const { headers: { authorization } } = req
+const router = new express.Router()
 
-  if (authorization && authorization.split(' ')[0] === 'Token') {
-    return authorization.split(' ')[1]
-  }
-  return null
-}
+router.route('/')
+/**
+  * Create a new person
+  *
+  * @route POST /person/
+  * @group Person - Manage person
+  * @param {Person_Request.model} person.body - Insert person
+  * @returns {Person.model} 201 - Created
+  * @return  {Error} 401 - Unauthorized
+  * @return  {Error} 403 - Forbidden
+  * @return  {Error} 404 - Not Found
+  * @return  {Error} 500 - Unexpected error
+  */
+  .post(AuthController.authenticate)
 
-const authBase = {
-  secret: process.env.AUTH_SECRET,
-  userProperty: 'payload',
-  getToken: getTokenFromHeaders
-}
-
-const userValidate = async (req, res, next) => {
-  try {
-    const countUsers = await UserModel.countDocuments({ email: req.payload.email })
-    if (countUsers > 0) next()
-    else res.status(401).json({})
-  } catch (error) {
-    next(error)
-  }
-}
-
-const auth = {
-  required: jwt(authBase),
-  optional: jwt({
-    ...authBase,
-    credentialsRequired: false
-  }),
-  userValidate
-}
-
-module.exports = auth
+export default router

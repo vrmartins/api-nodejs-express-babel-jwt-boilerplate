@@ -21,11 +21,13 @@ const UserSchema = new Schema({
   },
   hash: {
     type: String,
-    required: true
+    required: true,
+    select: false
   },
   salt: {
     type: String,
-    required: true
+    required: true,
+    select: false
   },
   tenants: Array, // TODO: Array of tenants
   role: Object // TODO: Verify
@@ -71,14 +73,13 @@ UserSchema.methods.generateJWT = function () {
     tenantId: 'tenantId', // Alterar para o tenant logado
     tenants: this.tenants,
     exp: parseInt(expirationDate.getTime() / 1000, 10)
-  }, 'secret')
+  }, process.env.AUTH_SECRET)
 }
 
 UserSchema.methods.toAuthJSON = function () {
   return {
     _id: this._id,
-    email: this.email,
-    token: this.generateJWT()
+    email: this.email
   }
 }
 

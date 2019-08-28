@@ -1,6 +1,6 @@
 import express from 'express'
 import BaseJoi from '@hapi/joi'
-import auth from './auth'
+import auth from '../middlewares/auth'
 import UserController from '../controllers/user'
 import validate from '../utils/joi/validate'
 import { notSpecialCharacter } from '../utils/joi/not-special-character'
@@ -97,6 +97,8 @@ router.route('/:id')
   * @return  {Error} 404 - Not Found
   * @return  {Error} 500 - Unexpected error
   */
+// TODO: Precisa mesmo desse userValidate?
+//  TODO: Será que apenas autenticar via /authenticate já não garante essa integridade?
   .put(auth.required, auth.userValidate, UserController.put)
 
 /**
