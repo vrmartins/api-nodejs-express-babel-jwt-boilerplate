@@ -24,6 +24,9 @@ const UserController = {
       await finalUser.save()
       res.json({ user: finalUser.toAuthJSON() })
 
+      // TODO: O e-mail deve apresentar o link e mensagem de ativação apenas se usuário escolheu
+      // autenticar por email ao invés do login social
+      // TODO: O login deve bater no frontend, este por sua vez deve bater no post de activate
       sendWelcomeEmail(user)
     } catch (error) {
       next(error)
