@@ -1,5 +1,6 @@
 import UserModel from '../models/user'
 import sendWelcomeEmail from '../utils/sendWelcomeEmail'
+import { ResourceNotFound } from '../errors/ResourceNotFound'
 
 const UserController = {
   // TODO: Garantir que apenas usuários autenticados recebam retorno nesse endpoint
@@ -19,10 +20,35 @@ const UserController = {
 
     try {
       finalUser.setPassword(user.password)
+      finalUser.setConfirmationCode()
       await finalUser.save()
       res.json({ user: finalUser.toAuthJSON() })
 
       sendWelcomeEmail(user)
+    } catch (error) {
+      next(error)
+    }
+  },
+
+  activate: async ({ params }, res, next) => {
+    try {
+      const updateResult = await UserModel.updateOne({
+        confirmationCode: params.confirmationCode,
+        confirmed: false
+      }, {
+        $set: { confirmed: true }
+      })
+
+      if (updateResult.nModified === 0) throw new ResourceNotFound()
+
+      const user = await UserModel.findOne({
+        confirmationCode: params.confirmationCode,
+        confirmed: true
+      })
+
+      if (!user) throw new ResourceNotFound()
+
+      res.json(user.toAuthJSON())
     } catch (error) {
       next(error)
     }

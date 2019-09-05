@@ -31,7 +31,16 @@ const UserSchema = new Schema({
   },
   tenants: Array, // TODO: Array of tenants
   role: Object, // TODO: Verify
-  policy: Boolean
+  policy: Boolean,
+  confirmed: {
+    type: Boolean,
+    default: false
+  },
+  confirmationCode: {
+    type: String,
+    required: false,
+    select: false
+  }
 }, {
   timestamps: true
 })
@@ -54,6 +63,10 @@ UserSchema.methods.setPassword = function (password) {
   this.hash = crypto
     .pbkdf2Sync(password, this.salt, 10000, 512, 'sha512')
     .toString('hex')
+}
+
+UserSchema.methods.setConfirmationCode = function () {
+  this.confirmationCode = crypto.randomBytes(16).toString('hex')
 }
 
 UserSchema.methods.validatePassword = function (password) {
@@ -80,7 +93,9 @@ UserSchema.methods.generateJWT = function () {
 UserSchema.methods.toAuthJSON = function () {
   return {
     _id: this._id,
-    email: this.email
+    email: this.email,
+    firstName: this.firstName,
+    lastName: this.lastName
   }
 }
 

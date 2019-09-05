@@ -7,7 +7,7 @@ const sendWelcomeEmail = ({ email, firstName }) => {
     to: email,
     subject: 'Bem-Vindo ao WebAppSB',
     text: message,
-    html: `<bold>${message}</bold>`
+    html: `<b>${message}</b>`
   })
 }
 

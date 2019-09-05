@@ -40,6 +40,9 @@ const userSchema = Joi.object().keys({
  * @property {string} password.required - Password
  */
 
+router.route('/activate/:confirmationCode')
+  .post(UserController.activate)
+
 router.route('/')
 /**
   * Get a list of users
