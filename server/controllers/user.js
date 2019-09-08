@@ -29,7 +29,7 @@ const UserController = {
 
       // TODO: O e-mail deve apresentar o link e mensagem de ativação apenas se o usuário escolheu
       // autenticar por email ao invés do login social
-      // TODO: Criar o endpoint de reenvio do link de ativação
+      // TODO: Criar o endpoint de reenvio do link de ativação [Será que é realmente necessário?]
       // TODO: Criar endpoint para recuperação de senha
       sendWelcomeEmail(finalUser)
     } catch (error) {
