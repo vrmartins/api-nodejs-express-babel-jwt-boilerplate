@@ -1,6 +1,7 @@
 import UserModel from '../models/user'
 import sendWelcomeEmail from '../utils/sendWelcomeEmail'
 import { ResourceNotFound } from '../errors/ResourceNotFound'
+import logger from '../logger'
 
 const UserController = {
   // TODO: Garantir que apenas usuários autenticados recebam retorno nesse endpoint
@@ -15,6 +16,7 @@ const UserController = {
   },
 
   post: async (req, res, next) => {
+    logger.info(`Recebido requisição para cadastro do usuário com email [${req.body.email}]`)
     const user = req.body
     const finalUser = new UserModel(user)
 
@@ -22,11 +24,11 @@ const UserController = {
       finalUser.setPassword(user.password)
       finalUser.setConfirmationCode()
       await finalUser.save()
+      logger.info(`Usuário com email [${req.body.email}] cadastrado com id [${finalUser.id}] e confirmationCode [${finalUser.confirmationCode}]`)
       res.json({ user: finalUser.toAuthJSON() })
 
       // TODO: O e-mail deve apresentar o link e mensagem de ativação apenas se o usuário escolheu
       // autenticar por email ao invés do login social
-      // TODO: O login deve bater no frontend, este por sua vez deve bater no post de activate
       // TODO: Criar o endpoint de reenvio do link de ativação
       // TODO: Criar endpoint para recuperação de senha
       sendWelcomeEmail(finalUser)
@@ -36,6 +38,7 @@ const UserController = {
   },
 
   activate: async ({ params }, res, next) => {
+    logger.info(`Iniciando processo de ativação para confirmationCode [${params.confirmationCode}]`)
     try {
       const updateResult = await UserModel.updateOne({
         confirmationCode: params.confirmationCode,
@@ -53,8 +56,11 @@ const UserController = {
 
       if (!user) throw new ResourceNotFound()
 
+      logger.info(`Usuário com id [${user._id}] e email [${user.email}] foi confirmado`)
+
       res.json(user.toAuthJSON())
     } catch (error) {
+      logger.warn(`Erro ao confirmar usuário com confirmation_code [${params.confirmationCode}]: ${error.message}`)
       next(error)
     }
   },

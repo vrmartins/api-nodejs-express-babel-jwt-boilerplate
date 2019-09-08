@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer')
+const logger = require('../logger')
 // const { decode } = require('./base64')
 
 /**
@@ -32,7 +33,7 @@ const sendEmail = (params) => {
   })
 
   return transporter.sendMail(params).then((info) => {
-    console.log('Message sent: %s', info.messageId)
+    logger.info(`Email enviado para [${params.to}] com messageId [${info.messageId}]`)
     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info))
     return info
   })
