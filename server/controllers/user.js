@@ -40,21 +40,17 @@ const UserController = {
   activate: async ({ params }, res, next) => {
     logger.info(`Iniciando processo de ativação para confirmationCode [${params.confirmationCode}]`)
     try {
-      const updateResult = await UserModel.updateOne({
-        confirmationCode: params.confirmationCode,
-        confirmed: false
-      }, {
-        $set: { confirmed: true }
-      })
-
-      if (updateResult.nModified === 0) throw new ResourceNotFound()
-
-      const user = await UserModel.findOne({
-        confirmationCode: params.confirmationCode,
-        confirmed: true
-      })
-
+      const user = await UserModel.findOne({ confirmationCode: params.confirmationCode })
       if (!user) throw new ResourceNotFound()
+
+      if (user.confirmed) {
+        logger.info(`O usuário com email [${user.email}] e id [${user._id}] já havia sido confirmado`)
+        return res.json(user.toAuthJSON())
+      }
+
+      user.confirmed = true
+
+      await user.save()
 
       logger.info(`Usuário com id [${user._id}] e email [${user.email}] foi confirmado`)
 
