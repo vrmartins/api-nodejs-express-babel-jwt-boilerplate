@@ -13,7 +13,7 @@ const AuthController = {
         })
       }
 
-      if (!user.confirmationCode) {
+      if (!user.confirmed) {
         logger.warn(`Usuário com id [${user._id}] e email [${email}] não está confirmado`)
         return response.status(401).json({
           'error.errors.email.message': 'Usuário não foi confirmado'
