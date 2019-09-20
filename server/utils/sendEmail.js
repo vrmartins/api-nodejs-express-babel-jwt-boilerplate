@@ -34,6 +34,7 @@ const sendEmail = (params) => {
 
   return transporter.sendMail(params).then((info) => {
     logger.info(`Email enviado para [${params.to}] com messageId [${info.messageId}]`)
+    logger.debug('Parâmetros para o envio do email:', params)
     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info))
     return info
   })
