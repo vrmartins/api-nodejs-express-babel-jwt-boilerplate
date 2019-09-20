@@ -86,7 +86,9 @@ UserSchema.methods.generateJWT = function () {
     id: this._id,
     tenantId: 'tenantId', // Alterar para o tenant logado
     tenants: this.tenants,
-    exp: parseInt(expirationDate.getTime() / 1000, 10)
+    exp: parseInt(expirationDate.getTime() / 1000, 10),
+    firstName: this.firstName,
+    lastName: this.lastName
   }, process.env.AUTH_SECRET)
 }
 
