@@ -1,26 +1,21 @@
-const jwt = require('express-jwt')
+import express from 'express'
+import AuthController from '../controllers/auth'
 
-const getTokenFromHeaders = (req) => {
-  const { headers: { authorization } } = req
+const router = new express.Router()
 
-  if (authorization && authorization.split(' ')[0] === 'Token') {
-    return authorization.split(' ')[1]
-  }
-  return null
-}
+router.route('/')
+/**
+  * Create a new person
+  *
+  * @route POST /person/
+  * @group Person - Manage person
+  * @param {Person_Request.model} person.body - Insert person
+  * @returns {Person.model} 201 - Created
+  * @return  {Error} 401 - Unauthorized
+  * @return  {Error} 403 - Forbidden
+  * @return  {Error} 404 - Not Found
+  * @return  {Error} 500 - Unexpected error
+  */
+  .post(AuthController.authenticate)
 
-const auth = {
-  required: jwt({
-    secret: 'secret',
-    userProperty: 'payload',
-    getToken: getTokenFromHeaders
-  }),
-  optional: jwt({
-    secret: 'secret',
-    userProperty: 'payload',
-    getToken: getTokenFromHeaders,
-    credentialsRequired: false
-  })
-}
-
-module.exports = auth
+export default router

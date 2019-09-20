@@ -1,7 +1,6 @@
 import express from 'express'
 import BaseJoi from '@hapi/joi'
-import auth from './auth'
-import User from '../models/user'
+import auth from '../middlewares/auth'
 import UserController from '../controllers/user'
 import validate from '../utils/joi/validate'
 import { notSpecialCharacter } from '../utils/joi/not-special-character'
@@ -14,7 +13,8 @@ const userSchema = Joi.object().keys({
   firstName: Joi.string().notSpecialCharacter().max(64).required(),
   lastName: Joi.string().notSpecialCharacter().max(128).required(),
   email: Joi.string().email().required(),
-  password: Joi.string().max(32).required()
+  password: Joi.string().max(32).required(),
+  policy: Joi.boolean()
 })
 
 /**
@@ -40,6 +40,9 @@ const userSchema = Joi.object().keys({
  * @property {string} password.required - Password
  */
 
+router.route('/activate/:confirmationCode')
+  .post(UserController.activate)
+
 router.route('/')
 /**
   * Get a list of users
@@ -54,7 +57,7 @@ router.route('/')
   * @return  {Error} 404 - The resource you were trying to reach is not found
   * @return  {Error} 500 - Unexpected error
   */
-  .get(auth.required, UserController.get)
+  .get(auth.required, auth.userValidate, UserController.get)
 
 /**
   * Create a new user
@@ -68,38 +71,7 @@ router.route('/')
   * @return  {Error} 404 - Not Found
   * @return  {Error} 500 - Unexpected error
   */
-  .post(validate({ body: userSchema }), (req, res, next) => {
-    // TODO: Transferir a função para o controller
-    const user = req.body
-
-    if (!user.email) {
-      return res.status(422).json({
-        errors: {
-          email: 'is required'
-        }
-      })
-    }
-
-    if (!user.password) {
-      return res.status(422).json({
-        errors: {
-          password: 'is required'
-        }
-      })
-    }
-
-    const finalUser = new User(user)
-
-    finalUser.setPassword(user.password)
-
-    return finalUser.save()
-      .then((doc) => {
-        res.json({ user: finalUser.toAuthJSON() })
-      })
-      .catch((error) => {
-        next(error)
-      })
-  })
+  .post(validate({ body: userSchema }), UserController.post)
 
 router.route('/:id')
 
@@ -116,7 +88,7 @@ router.route('/:id')
   * @return  {Error} 404 - The resource you were trying to reach is not found
   * @return  {Error} 500 - Unexpected error
   */
-  .get(auth.required, UserController.getById)
+  .get(auth.required, auth.userValidate, UserController.getById)
 
 /**
   * Update user by ID
@@ -129,7 +101,9 @@ router.route('/:id')
   * @return  {Error} 404 - Not Found
   * @return  {Error} 500 - Unexpected error
   */
-  .put(UserController.put)
+// TODO: Precisa mesmo desse userValidate?
+//  TODO: Será que apenas autenticar via /authenticate já não garante essa integridade?
+  .put(auth.required, auth.userValidate, UserController.put)
 
 /**
   * Delete a user by ID
@@ -142,6 +116,6 @@ router.route('/:id')
   * @return  {Error} 404 - Not Found
   * @return  {Error} 500 - Unexpected error
   */
-  .delete(UserController.deleteById)
+  .delete(auth.required, auth.userValidate, UserController.deleteById)
 
 export default router

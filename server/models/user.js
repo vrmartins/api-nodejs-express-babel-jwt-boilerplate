@@ -21,14 +21,26 @@ const UserSchema = new Schema({
   },
   hash: {
     type: String,
-    required: true
+    required: true,
+    select: false
   },
   salt: {
     type: String,
-    required: true
+    required: true,
+    select: false
   },
   tenants: Array, // TODO: Array of tenants
-  role: Object // TODO: Verify
+  role: Object, // TODO: Verify
+  policy: Boolean,
+  confirmed: {
+    type: Boolean,
+    default: false
+  },
+  confirmationCode: {
+    type: String,
+    required: false,
+    select: false
+  }
 }, {
   timestamps: true
 })
@@ -37,11 +49,24 @@ UserSchema.plugin(uniqueValidator, {
   message: 'Error, expected {PATH} to be unique.'
 })
 
+UserSchema.methods.toResponse = function () {
+  return {
+    _id: this._id,
+    email: this.email,
+    firstName: this.firstName,
+    lastName: this.lastName
+  }
+}
+
 UserSchema.methods.setPassword = function (password) {
   this.salt = crypto.randomBytes(16).toString('hex')
   this.hash = crypto
     .pbkdf2Sync(password, this.salt, 10000, 512, 'sha512')
     .toString('hex')
+}
+
+UserSchema.methods.setConfirmationCode = function () {
+  this.confirmationCode = crypto.randomBytes(16).toString('hex')
 }
 
 UserSchema.methods.validatePassword = function (password) {
@@ -54,21 +79,25 @@ UserSchema.methods.validatePassword = function (password) {
 UserSchema.methods.generateJWT = function () {
   const today = new Date()
   const expirationDate = new Date(today)
-  expirationDate.setDate(today.getDate() + 60)
+  expirationDate.setDate(today.getDate() + 30)
 
   return jwt.sign({
     email: this.email,
     id: this._id,
     tenantId: 'tenantId', // Alterar para o tenant logado
-    exp: parseInt(expirationDate.getTime() / 1000, 10)
-  }, 'secret')
+    tenants: this.tenants,
+    exp: parseInt(expirationDate.getTime() / 1000, 10),
+    firstName: this.firstName,
+    lastName: this.lastName
+  }, process.env.AUTH_SECRET)
 }
 
 UserSchema.methods.toAuthJSON = function () {
   return {
     _id: this._id,
     email: this.email,
-    token: this.generateJWT()
+    firstName: this.firstName,
+    lastName: this.lastName
   }
 }
 

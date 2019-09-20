@@ -1,5 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
+import cors from 'cors'
 import routes from './routes'
 import expressSwagger from './config/express-swagger'
 import mongoose from 'mongoose'
@@ -16,6 +17,8 @@ const databaseUri = (function () {
 }())
 
 mongoose.connect(databaseUri, { useNewUrlParser: true, useCreateIndex: true })
+
+app.use(cors())
 
 app.use(helmet())
 

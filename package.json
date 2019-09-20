@@ -55,6 +55,7 @@
   "dependencies": {
     "@hapi/joi": "^15.1.0",
     "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv-safe": "^6.1.0",
     "express": "^4.16.4",
@@ -65,6 +66,7 @@
     "mongo-tenant": "^1.6.0",
     "mongoose": "^5.4.20",
     "mongoose-unique-validator": "^2.0.3",
+    "nodemailer": "^6.3.0",
     "swagger-jsdoc": "^3.3.0",
     "swagger-ui-express": "^4.0.2",
     "winston": "^3.2.1"

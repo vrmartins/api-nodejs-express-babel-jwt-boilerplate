@@ -1,6 +1,6 @@
 import express from 'express'
 import BaseJoi from '@hapi/joi'
-import auth from './auth'
+import auth from '../middlewares/auth'
 import validate from '../utils/joi/validate'
 import PersonController from '../controllers/person'
 import { notSpecialCharacter } from '../utils/joi/not-special-character'
