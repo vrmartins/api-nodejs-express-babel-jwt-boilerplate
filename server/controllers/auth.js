@@ -23,7 +23,7 @@ const AuthController = {
       if (!user.validatePassword(password)) {
         logger.warn(`Tentativa de autenticação negada por senha inválida para usuário com id [${user._id}] e email [${email}]`)
         return response.status(401).json({
-          'error.errors.email.password': 'Senha inválida'
+          'error.errors.password.message': 'Senha inválida'
         })
       }
 
